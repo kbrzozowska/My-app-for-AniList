@@ -2,46 +2,73 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import cacheProxy from './cacheProxy'
 import {tokenStorage} from 'fetch-oauth2';
-import {fetchWithMiddleware, middleware} from 'fetch-oauth2';
 import {Router, Route, Link, IndexRoute, hashHistory} from 'react-router';
 
 document.addEventListener('DOMContentLoaded', function() {
-
-    // const storage = tokenStorage({initialToken, fetchToken, generateToken});
-    // const oauth2Fetch = fetchWithMiddleware(middleware.authorisationChallengeHandler(storage), middleware.setOAuth2Authorization(storage));
-    //
-    // oauthFetch('https://anilist.co/api/auth/authorize?grant_type=client_credentials&client_id=brethil-sc5w1&response_type=code&redirect_uri=Array').then(response => resp.json()).catch(error => {
-    //     console.log(err);
-    //
-    // });
 
     class AnimeList extends React.Component {
         constructor(props) {
             super(props);
             this.state = {
+                clientToken: "",
                 loading: true
             };
         }
         aniList() {
-
-            fetch('https://anilist.co/api/auth/authorize?grant_type=client_credentials&client_id=brethil-sc5w1&response_type=code&redirect_uri=Array', {
+            let url = "https://anilist.co/api/";
+            let obj = {
+                grant_type: "client_credentials",
+                client_id: "brethil-sc5w1",
+                client_secret: "2N6iFsSDlh8eRAbmqmsJhoW2G0bqb"
+            }
+            fetch(url + "auth/access_token", {
                 method: 'POST',
-                headers: {
-                    grant_type: "client_credentials",
-                    client_id: "brethil-sc5w1",
-                    client_secret: "2N6iFsSDlh8eRAbmqmsJhoW2G0bqb"
-                }
-
+                body: obj
             }).then(resp => resp.json()).then(data => {
-                console.log(data);
-                this.setState({loading: false});
+                console.log(data)
             });
 
-            // const access = {
-            //     grant_type: "client_credentials",
-            //     client_id: "brethil-sc5w1",
-            //     client_secret: "2N6iFsSDlh8eRAbmqmsJhoW2G0bqb"
-            // }
+            //           $(() => {
+            //
+            //         let url = "https://anilist.co/api/";
+            //         let obj = {
+            //             grant_type: "client_credentials",
+            //             client_id: "brethil-sc5w1",
+            //             client_secret: "2N6iFsSDlh8eRAbmqmsJhoW2G0bqb"
+            //         }
+            //
+            //         $.ajax({
+            //           method: "POST",
+            //           url: url + "auth/access_token",
+            //           data: obj
+            //
+            //         })
+            //         .done(function(response) {
+            //
+            //             console.log(response);
+            //
+            //             $.ajax({
+            //               method: "GET",
+            //               headers: {
+            //                   "access_token" : response.access_token
+            //               },
+            //               url: url + "character/100?access_token=" + response.access_token
+            //             })
+            //             .done(function(response) {
+            //
+            //                 console.log(response);
+            //
+            //
+            //
+            //             });
+            //
+            //         });
+            //
+            //
+            //
+            //
+            // });
+
         }
         componentDidMount() {
             this.aniList();

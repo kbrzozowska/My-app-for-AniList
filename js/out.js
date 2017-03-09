@@ -26960,15 +26960,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 document.addEventListener('DOMContentLoaded', function () {
-
-    // const storage = tokenStorage({initialToken, fetchToken, generateToken});
-    // const oauth2Fetch = fetchWithMiddleware(middleware.authorisationChallengeHandler(storage), middleware.setOAuth2Authorization(storage));
-    //
-    // oauthFetch('https://anilist.co/api/auth/authorize?grant_type=client_credentials&client_id=brethil-sc5w1&response_type=code&redirect_uri=Array').then(response => resp.json()).catch(error => {
-    //     console.log(err);
-    //
-    // });
-
     var AnimeList = function (_React$Component) {
         _inherits(AnimeList, _React$Component);
 
@@ -26978,6 +26969,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var _this = _possibleConstructorReturn(this, (AnimeList.__proto__ || Object.getPrototypeOf(AnimeList)).call(this, props));
 
             _this.state = {
+                clientToken: "",
                 loading: true
             };
             return _this;
@@ -26986,28 +26978,61 @@ document.addEventListener('DOMContentLoaded', function () {
         _createClass(AnimeList, [{
             key: 'aniList',
             value: function aniList() {
-                var _this2 = this;
-
-                fetch('https://anilist.co/api/auth/authorize?grant_type=client_credentials&client_id=brethil-sc5w1&response_type=code&redirect_uri=Array', {
+                var url = "https://anilist.co/api/";
+                var obj = {
+                    grant_type: "client_credentials",
+                    client_id: "brethil-sc5w1",
+                    client_secret: "2N6iFsSDlh8eRAbmqmsJhoW2G0bqb"
+                };
+                fetch(url + "auth/access_token", {
                     method: 'POST',
-                    headers: {
-                        grant_type: "client_credentials",
-                        client_id: "brethil-sc5w1",
-                        client_secret: "2N6iFsSDlh8eRAbmqmsJhoW2G0bqb"
-                    }
-
+                    body: obj
                 }).then(function (resp) {
                     return resp.json();
                 }).then(function (data) {
                     console.log(data);
-                    _this2.setState({ loading: false });
                 });
 
-                // const access = {
-                //     grant_type: "client_credentials",
-                //     client_id: "brethil-sc5w1",
-                //     client_secret: "2N6iFsSDlh8eRAbmqmsJhoW2G0bqb"
-                // }
+                //           $(() => {
+                //
+                //         let url = "https://anilist.co/api/";
+                //         let obj = {
+                //             grant_type: "client_credentials",
+                //             client_id: "brethil-sc5w1",
+                //             client_secret: "2N6iFsSDlh8eRAbmqmsJhoW2G0bqb"
+                //         }
+                //
+                //         $.ajax({
+                //           method: "POST",
+                //           url: url + "auth/access_token",
+                //           data: obj
+                //
+                //         })
+                //         .done(function(response) {
+                //
+                //             console.log(response);
+                //
+                //             $.ajax({
+                //               method: "GET",
+                //               headers: {
+                //                   "access_token" : response.access_token
+                //               },
+                //               url: url + "character/100?access_token=" + response.access_token
+                //             })
+                //             .done(function(response) {
+                //
+                //                 console.log(response);
+                //
+                //
+                //
+                //             });
+                //
+                //         });
+                //
+                //
+                //
+                //
+                // });
             }
         }, {
             key: 'componentDidMount',
