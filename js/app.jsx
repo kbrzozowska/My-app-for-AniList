@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import cacheProxy from './cacheProxy'
+import cacheProxy from './cacheProxy';
+import URLSearchParams from 'url-search-params';
+import qs from 'qs'
 import {tokenStorage} from 'fetch-oauth2';
 import {Router, Route, Link, IndexRoute, hashHistory} from 'react-router';
 
@@ -23,51 +25,27 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             fetch(url + "auth/access_token", {
                 method: 'POST',
-                body: obj
-            }).then(resp => resp.json()).then(data => {
-                console.log(data)
-            });
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: qs.stringify(obj)
+            }).then(data => data.json()).then(data => {
 
-            //           $(() => {
-            //
-            //         let url = "https://anilist.co/api/";
-            //         let obj = {
-            //             grant_type: "client_credentials",
-            //             client_id: "brethil-sc5w1",
-            //             client_secret: "2N6iFsSDlh8eRAbmqmsJhoW2G0bqb"
-            //         }
-            //
-            //         $.ajax({
-            //           method: "POST",
-            //           url: url + "auth/access_token",
-            //           data: obj
-            //
-            //         })
-            //         .done(function(response) {
-            //
-            //             console.log(response);
-            //
-            //             $.ajax({
-            //               method: "GET",
-            //               headers: {
-            //                   "access_token" : response.access_token
-            //               },
-            //               url: url + "character/100?access_token=" + response.access_token
-            //             })
-            //             .done(function(response) {
-            //
-            //                 console.log(response);
-            //
-            //
-            //
-            //             });
-            //
-            //         });
-            //
-            //
-            //
-            //
-            // });
+                console.log(data);
+
+                this.setState({clientToken: data.access_token});
+
+                fetch(url + "character/100?access_token=" + this.state.clientToken, {
+                    method: "GET",
+                    headers: {
+                        "access_token": this.state.clientToken
+                    }
+                }).then(response => response.json()).then(data => {
+
+                    console.log(data)
+                });
+
+            });
 
         }
         componentDidMount() {
