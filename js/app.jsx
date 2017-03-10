@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import cacheProxy from './cacheProxy';
-import URLSearchParams from 'url-search-params';
 import qs from 'qs'
 import {tokenStorage} from 'fetch-oauth2';
 import {Router, Route, Link, IndexRoute, hashHistory} from 'react-router';
@@ -35,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 this.setState({clientToken: data.access_token});
 
-                fetch(url + "character/100?access_token=" + this.state.clientToken, {
+                fetch(url + "browse/anime?sort=popularity-desc&year=2017&status=Currently%20Airing&access_token=" + this.state.clientToken, {
                     method: "GET",
                     headers: {
                         "access_token": this.state.clientToken
