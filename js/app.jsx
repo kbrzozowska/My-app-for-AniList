@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
             super(props);
             this.state = {
                 clientToken: "",
-                loading: true
+                loading: true,
+                data: []
             };
         }
         aniList() {
@@ -34,14 +35,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 this.setState({clientToken: data.access_token});
 
-                fetch(url + "browse/anime?sort=popularity-desc&year=2017&status=Currently%20Airing&access_token=" + this.state.clientToken, {
+                fetch(url + "browse/anime?sort=end_date-desc&year=2017&status=Currently%20Airing&airing_data=true&access_token=" + this.state.clientToken, {
                     method: "GET",
                     headers: {
                         "access_token": this.state.clientToken
                     }
                 }).then(response => response.json()).then(data => {
+                    this.setState({data, loading: false});
+                    console.log(this.state.data)
 
-                    console.log(data)
                 });
 
             });
@@ -55,8 +57,16 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.state.loading) {
                 return null;
             }
-            console.log("render")
+            const airingList = this.state.data.map(anime => {
+                return <li key={anime.id}>
+                    {anime.title_english}
+                    {anime.title_japanese}
 
+                </li>;
+            });
+            return (
+                <div>{airingList}</div>
+            );
         }
     }
 
