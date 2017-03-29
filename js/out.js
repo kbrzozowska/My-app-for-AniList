@@ -115,16 +115,42 @@ document.addEventListener('DOMContentLoaded', function () {
             _this.state = {
                 clientToken: "",
                 loading: true,
-                data: []
+                data: [],
+                currentDate: null
             };
             return _this;
         }
 
         _createClass(AnimeList, [{
+            key: 'getDate',
+            value: function getDate() {
+                //set current date
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1; //January is 0!
+                var yyyy = today.getFullYear();
+                if (dd < 10) {
+                    dd = '0' + dd;
+                }
+
+                if (mm < 10) {
+                    mm = '0' + mm;
+                }
+                today = yyyy + '-' + mm + '-' + dd;
+
+                console.log(today);
+                //current date to state - not working :/
+                this.setState({
+                    currentDate: today
+                });
+                console.log(this.state.currentDate);
+            }
+        }, {
             key: 'aniList',
             value: function aniList() {
                 var _this2 = this;
 
+                //data for authentication
                 var url = "https://anilist.co/api/";
                 var obj = {
                     grant_type: "client_credentials",
@@ -140,11 +166,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 }).then(function (data) {
                     return data.json();
                 }).then(function (data) {
-
                     console.log(data);
-
-                    _this2.setState({ clientToken: data.access_token });
-
+                    _this2.setState({
+                        clientToken: data.access_token
+                    });
                     fetch(url + "browse/anime?sort=end_date-desc&year=2017&status=Currently%20Airing&airing_data=true&access_token=" + _this2.state.clientToken, {
                         method: "GET",
                         headers: {
@@ -153,7 +178,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     }).then(function (response) {
                         return response.json();
                     }).then(function (data) {
-                        _this2.setState({ data: data, loading: false });
+                        _this2.setState({
+                            data: data,
+                            loading: false
+                        });
                         console.log(_this2.state.data);
                     });
                 });
@@ -162,6 +190,7 @@ document.addEventListener('DOMContentLoaded', function () {
             key: 'componentDidMount',
             value: function componentDidMount() {
                 this.aniList();
+                this.getDate();
             }
         }, {
             key: 'render',
@@ -173,14 +202,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     return _react2.default.createElement(
                         'li',
                         { key: anime.id },
+                        ' ',
                         anime.title_english,
-                        anime.title_japanese
+                        ' ',
+                        anime.title_japanese,
+                        ' '
                     );
                 });
                 return _react2.default.createElement(
-                    'div',
+                    'ul',
                     null,
-                    airingList
+                    ' ',
+                    airingList,
+                    ' '
                 );
             }
         }]);
@@ -188,7 +222,43 @@ document.addEventListener('DOMContentLoaded', function () {
         return AnimeList;
     }(_react2.default.Component);
 
-    _reactDom2.default.render(_react2.default.createElement(AnimeList, null), document.getElementById('app'));
+    var Template = function (_React$Component2) {
+        _inherits(Template, _React$Component2);
+
+        function Template(props) {
+            _classCallCheck(this, Template);
+
+            return _possibleConstructorReturn(this, (Template.__proto__ || Object.getPrototypeOf(Template)).call(this, props));
+        }
+
+        _createClass(Template, [{
+            key: 'render',
+            value: function render() {
+                var mainDivStyle = {
+                    border: '1px solid green',
+                    width: '300px',
+                    height: '100%',
+                    display: 'inline-block'
+                };
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'wrapper' },
+                    ' ',
+                    _react2.default.createElement(
+                        'div',
+                        { style: mainDivStyle },
+                        _react2.default.createElement(AnimeList, null),
+                        ' '
+                    ),
+                    ' '
+                );
+            }
+        }]);
+
+        return Template;
+    }(_react2.default.Component);
+
+    _reactDom2.default.render(_react2.default.createElement(Template, null), document.getElementById('app'));
 });
 
 /***/ }),
