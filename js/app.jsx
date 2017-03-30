@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (mm < 10) {
                     mm = '0' + mm
                 }
+                //let const?
                 today = yyyy + '-' + mm + '-' + dd;
 
                 console.log(today)
@@ -127,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <AnimeList/> </div> </div > ;
             }
         }
-        ReactDOM.render( < Template /> , document.getElementById('app'));
+        ReactDOM.render( <Template /> , document.getElementById('app'));
     }
 
 );
