@@ -24,10 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     clientToken: "",
                     loading: true,
                     data: [],
-                    currentDate: null
+                    currentDate: ""
                 };
             }
-            getDate(){
+            getDate() {
                 //set current date
                 let today = new Date();
                 let dd = today.getDate();
@@ -40,14 +40,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (mm < 10) {
                     mm = '0' + mm
                 }
-                today = yyyy+'-'+mm+'-'+dd;
+                today = yyyy + '-' + mm + '-' + dd;
 
                 console.log(today)
-                //current date to state - not working :/
+                //current date to state 
                 this.setState({
                     currentDate: today
                 });
-                console.log(this.state.currentDate)
+
             }
             aniList() {
                 //data for authentication
@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             loading: false
                         });
                         console.log(this.state.data)
+                        console.log(this.state)
                     });
                 });
             }
@@ -91,13 +92,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     return null;
                 }
                 const airingList = this.state.data.map(anime => {
-                    return <li key = {
-                            anime.id
-                        } > {
-                            anime.title_english
-                        } {
-                            anime.title_japanese
-                        } </li>;
+                    if (anime.airing != null) {
+                        return <li key = {
+                                anime.id
+                            } > {
+                                anime.title_english
+                            } {
+                                anime.title_japanese
+                            } {
+                                anime.airing.time
+                            } </li>;
+                    }
+
                 });
                 return <ul > {
                     airingList
@@ -121,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <AnimeList/> </div> </div > ;
             }
         }
-        ReactDOM.render( <Template /> , document.getElementById('app'));
+        ReactDOM.render( < Template /> , document.getElementById('app'));
     }
 
 );
