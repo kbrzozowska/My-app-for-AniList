@@ -93,22 +93,22 @@ document.addEventListener('DOMContentLoaded', function () {
                     return null;
                 }
                 const airingList = this.state.data.map(anime => {
-                    if (anime.airing != null) {
+                    if (anime.airing != null && anime.airing.time.slice(0, 10) === this.state.currentDate) {
                         return <li key = {
-                                anime.id
-                            } > {
-                                anime.title_english
-                            } {
-                                anime.title_japanese
-                            } {
-                                anime.airing.time
-                            } </li>;
+                            anime.id
+                        } > {
+                            anime.title_english
+                        } {
+                            anime.title_japanese
+                        } {
+                            anime.airing.time.slice(0, 10)
+                        } </li>;
                     }
 
                 });
                 return <ul > {
-                    airingList
-                } </ul>;
+                        airingList
+                    } </ul>;
             }
         }
         class Template extends React.Component {
@@ -125,7 +125,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 return <div className = "wrapper" > < div style = {
                         mainDivStyle
                     } >
-                    <AnimeList/> </div> </div > ;
+                    <
+                    AnimeList / > </div> </div > ;
             }
         }
         ReactDOM.render( <Template /> , document.getElementById('app'));

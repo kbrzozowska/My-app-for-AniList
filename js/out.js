@@ -12238,6 +12238,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (mm < 10) {
                     mm = '0' + mm;
                 }
+                //let const?
                 today = yyyy + '-' + mm + '-' + dd;
 
                 console.log(today);
@@ -12297,11 +12298,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }, {
             key: 'render',
             value: function render() {
+                var _this3 = this;
+
                 if (this.state.loading) {
                     return null;
                 }
                 var airingList = this.state.data.map(function (anime) {
-                    if (anime.airing != null) {
+                    if (anime.airing != null && anime.airing.time.slice(0, 10) === _this3.state.currentDate) {
                         return _react2.default.createElement(
                             'li',
                             { key: anime.id },
@@ -12310,7 +12313,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             ' ',
                             anime.title_japanese,
                             ' ',
-                            anime.airing.time,
+                            anime.airing.time.slice(0, 10),
                             ' '
                         );
                     }
