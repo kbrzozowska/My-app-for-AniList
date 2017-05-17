@@ -4,3 +4,6 @@ body {
 .wrapper {
   background-color: lightblue;
 }
+ul {
+  display: 'block'
+};
